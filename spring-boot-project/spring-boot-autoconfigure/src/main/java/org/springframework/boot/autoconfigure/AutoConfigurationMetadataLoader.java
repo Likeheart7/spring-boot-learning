@@ -38,12 +38,19 @@ final class AutoConfigurationMetadataLoader {
 	private AutoConfigurationMetadataLoader() {
 	}
 
+	/**
+	 * 加载配置信息
+	 * @param classLoader 类加载器
+	 */
 	static AutoConfigurationMetadata loadMetadata(ClassLoader classLoader) {
 		return loadMetadata(classLoader, PATH);
 	}
 
 	static AutoConfigurationMetadata loadMetadata(ClassLoader classLoader, String path) {
 		try {
+			// 获取资源路径
+			// debug可以看到有一个url中的name属性为：META-INF/spring-autoconfigure-metadata.properties
+			// 在编译后的包target/build中可以找到
 			Enumeration<URL> urls = (classLoader != null) ? classLoader.getResources(path)
 					: ClassLoader.getSystemResources(path);
 			Properties properties = new Properties();

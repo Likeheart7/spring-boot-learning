@@ -28,6 +28,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 /**
+ * 加载properties配置文件
  * Strategy to load '.properties' files into a {@link PropertySource}.
  *
  * @author Dave Syer

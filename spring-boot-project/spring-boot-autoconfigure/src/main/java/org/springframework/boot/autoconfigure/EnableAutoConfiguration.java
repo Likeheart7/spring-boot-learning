@@ -34,6 +34,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 /**
+ * Spring Boot自动配置的核心注解
+ * 核心操作是本类注解@Import引入的{@link AutoConfigurationImportSelector}
  * Enable auto-configuration of the Spring Application Context, attempting to guess and
  * configure beans that you are likely to need. Auto-configuration classes are usually
  * applied based on your classpath and what beans you have defined. For example, if you

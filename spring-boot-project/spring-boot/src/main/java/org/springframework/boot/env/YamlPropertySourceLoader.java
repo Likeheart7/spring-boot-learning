@@ -27,6 +27,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
 
 /**
+ * 加载yaml、yml配置文件
  * Strategy to load '.yml' (or '.yaml') files into a {@link PropertySource}.
  *
  * @author Dave Syer

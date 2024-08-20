@@ -186,28 +186,38 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 		return lifecycleListeners;
 	}
 
+	/**
+	 * tomcat就是在这里启动的
+	 */
 	@Override
 	public WebServer getWebServer(ServletContextInitializer... initializers) {
 		if (this.disableMBeanRegistry) {
 			Registry.disableRegistry();
 		}
+		// 创建tomcat实例
 		Tomcat tomcat = new Tomcat();
 		File baseDir = (this.baseDirectory != null) ? this.baseDirectory : createTempDir("tomcat");
+		// 设置工作目录
 		tomcat.setBaseDir(baseDir.getAbsolutePath());
 		for (LifecycleListener listener : this.serverLifecycleListeners) {
 			tomcat.getServer().addLifecycleListener(listener);
 		}
+		// this.protocol默认是org.apache.coyote.http11.Http11NioProtocol
 		Connector connector = new Connector(this.protocol);
 		connector.setThrowOnFailure(true);
+		// 给service添加connector
 		tomcat.getService().addConnector(connector);
 		customizeConnector(connector);
 		tomcat.setConnector(connector);
+		// 关闭热部署
 		tomcat.getHost().setAutoDeploy(false);
+		// 配置Engine
 		configureEngine(tomcat.getEngine());
 		for (Connector additionalConnector : this.additionalTomcatConnectors) {
 			tomcat.getService().addConnector(additionalConnector);
 		}
 		prepareContext(tomcat.getHost(), initializers);
+		// 实例化TomcatWebServer，里面会启动tomcat
 		return getTomcatWebServer(tomcat);
 	}
 

@@ -44,6 +44,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.StringUtils;
 
 /**
+ * 数据源的自动配置类
  * {@link EnableAutoConfiguration Auto-configuration} for {@link DataSource}.
  *
  * @author Dave Syer
@@ -57,6 +58,7 @@ import org.springframework.util.StringUtils;
 @ConditionalOnClass({ DataSource.class, EmbeddedDatabaseType.class })
 @ConditionalOnMissingBean(type = "io.r2dbc.spi.ConnectionFactory")
 @AutoConfigureBefore(SqlInitializationAutoConfiguration.class)
+// 该注解配合@ConfiguratoinProperties使用，将配置映射到配置文件上
 @EnableConfigurationProperties(DataSourceProperties.class)
 @Import({ DataSourcePoolMetadataProvidersConfiguration.class,
 		DataSourceInitializationConfiguration.InitializationSpecificCredentialsDataSourceInitializationConfiguration.class,

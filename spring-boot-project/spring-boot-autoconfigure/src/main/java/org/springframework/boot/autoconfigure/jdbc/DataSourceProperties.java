@@ -47,6 +47,7 @@ import org.springframework.util.StringUtils;
  * @author Scott Frederick
  * @since 1.1.0
  */
+// 该注解将该类的属性映射到配置文件的配置上，prefix表示配置文件里的前缀
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceProperties implements BeanClassLoaderAware, InitializingBean {
 
