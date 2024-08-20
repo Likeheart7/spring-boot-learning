@@ -61,6 +61,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 默认的日志系统
  * {@link LoggingSystem} for <a href="https://logback.qos.ch">logback</a>.
  *
  * @author Phillip Webb
@@ -108,29 +109,46 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		return new LogbackLoggingSystemProperties(environment);
 	}
 
+	/**
+	 * 该方法定义了默认配置文件有哪些，可以看到有logback.xml
+	 */
 	@Override
 	protected String[] getStandardConfigLocations() {
 		return new String[] { "logback-test.groovy", "logback-test.xml", "logback.groovy", "logback.xml" };
 	}
 
+	/**
+	 * 初始化之前调用
+	 */
 	@Override
 	public void beforeInitialize() {
+		// 日志上下文
 		LoggerContext loggerContext = getLoggerContext();
+		// 是否初始化
 		if (isAlreadyInitialized(loggerContext)) {
 			return;
 		}
+		// 调用父类方法
 		super.beforeInitialize();
+		// 添加过滤器
 		loggerContext.getTurboFilterList().add(FILTER);
 	}
 
+	/**
+	 * 初始化操作
+	 */
 	@Override
 	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
 		LoggerContext loggerContext = getLoggerContext();
+		// 是否加载过
 		if (isAlreadyInitialized(loggerContext)) {
 			return;
 		}
+		// 日志初始化
 		super.initialize(initializationContext, configLocation, logFile);
+		// 删除filter
 		loggerContext.getTurboFilterList().remove(FILTER);
+		// 初始化标记
 		markAsInitialized(loggerContext);
 		if (StringUtils.hasText(System.getProperty(CONFIGURATION_FILE_PROPERTY))) {
 			getLogger(LogbackLoggingSystem.class.getName()).warn("Ignoring '" + CONFIGURATION_FILE_PROPERTY
@@ -138,6 +156,9 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		}
 	}
 
+	/**
+	 * 加载默认配置
+	 */
 	@Override
 	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
 		LoggerContext context = getLoggerContext();
@@ -155,13 +176,20 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		context.setPackagingDataEnabled(true);
 	}
 
+	/**
+	 * 加载日志配置文件
+	 */
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
 			LogFile logFile) {
+		// 调用父类的该方法
 		super.loadConfiguration(initializationContext, location, logFile);
+		// 获取上下文
 		LoggerContext loggerContext = getLoggerContext();
+		// 停止并且重启
 		stopAndReset(loggerContext);
 		try {
+			// 配置文件加载
 			configureByResourceUrl(initializationContext, loggerContext, ResourceUtils.getURL(location));
 		}
 		catch (Exception ex) {
@@ -180,11 +208,17 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		}
 	}
 
+	/**
+	 * 日志配置文件加载
+	 */
 	private void configureByResourceUrl(LoggingInitializationContext initializationContext, LoggerContext loggerContext,
 			URL url) throws JoranException {
 		if (XML_ENABLED && url.toString().endsWith("xml")) {
+			// logback日志操作
 			JoranConfigurator configurator = new SpringBootJoranConfigurator(initializationContext);
+			// 设置上下文
 			configurator.setContext(loggerContext);
+			// 执行配置，后面就属于logback源码部分了
 			configurator.doConfigure(url);
 		}
 		else {
@@ -227,8 +261,10 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 
 	@Override
 	protected void reinitialize(LoggingInitializationContext initializationContext) {
+		// 重新设置日志上下文
 		getLoggerContext().reset();
 		getLoggerContext().getStatusManager().clear();
+		// 加载配置文件
 		loadConfiguration(initializationContext, getSelfInitializationConfig(), null);
 	}
 
@@ -320,6 +356,9 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		return loggerContext.getObject(LoggingSystem.class.getName()) != null;
 	}
 
+	/**
+	 * 初始化标记
+	 */
 	private void markAsInitialized(LoggerContext loggerContext) {
 		loggerContext.putObject(LoggingSystem.class.getName(), new Object());
 	}

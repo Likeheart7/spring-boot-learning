@@ -28,6 +28,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 日志系统的统一抽象
  * Common abstraction over logging systems.
  *
  * @author Phillip Webb
@@ -69,6 +70,7 @@ public abstract class LoggingSystem {
 	}
 
 	/**
+	 * 初始化之前调用，目的是减少日志输出
 	 * Reset the logging system to be limit output. This method may be called before
 	 * {@link #initialize(LoggingInitializationContext, String, LogFile)} to reduce
 	 * logging noise until the system has been fully initialized.
@@ -76,6 +78,7 @@ public abstract class LoggingSystem {
 	public abstract void beforeInitialize();
 
 	/**
+	 * 初始化日志
 	 * Fully initialize the logging system.
 	 * @param initializationContext the logging initialization context
 	 * @param configLocation a log configuration location or {@code null} if default
@@ -87,6 +90,7 @@ public abstract class LoggingSystem {
 	}
 
 	/**
+	 * 清除日志
 	 * Clean up the logging system. The default implementation does nothing. Subclasses
 	 * should override this method to perform any logging system-specific cleanup.
 	 */
@@ -104,6 +108,7 @@ public abstract class LoggingSystem {
 	}
 
 	/**
+	 * 获取支持的日志级别
 	 * Returns a set of the {@link LogLevel LogLevels} that are actually supported by the
 	 * logging system.
 	 * @return the supported levels
@@ -113,6 +118,7 @@ public abstract class LoggingSystem {
 	}
 
 	/**
+	 * 设置日志级别
 	 * Sets the logging level for a given logger.
 	 * @param loggerName the name of the logger to set ({@code null} can be used for the
 	 * root logger).
@@ -124,6 +130,7 @@ public abstract class LoggingSystem {
 	}
 
 	/**
+	 * 获取日志配置
 	 * Returns a collection of the current configuration for all a {@link LoggingSystem}'s
 	 * loggers.
 	 * @return the current configurations
@@ -144,23 +151,35 @@ public abstract class LoggingSystem {
 	}
 
 	/**
+	 * 获取日志系统
 	 * Detect and return the logging system in use. Supports Logback and Java Logging.
 	 * @param classLoader the classloader
 	 * @return the logging system
 	 */
 	public static LoggingSystem get(ClassLoader classLoader) {
+		// 获取系统属性
 		String loggingSystemClassName = System.getProperty(SYSTEM_PROPERTY);
+		// 系统属性存在
 		if (StringUtils.hasLength(loggingSystemClassName)) {
+			// 是不是NONE
 			if (NONE.equals(loggingSystemClassName)) {
+				// 空的日志系统
 				return new NoOpLoggingSystem();
 			}
+			// 获取配置的日志系统对应的日志系统实例
 			return get(classLoader, loggingSystemClassName);
 		}
+		// 获取具体日志系统，默认情况下是LogbackLoggingSystem
 		LoggingSystem loggingSystem = SYSTEM_FACTORY.getLoggingSystem(classLoader);
 		Assert.state(loggingSystem != null, "No suitable logging system located");
 		return loggingSystem;
 	}
 
+	/**
+	 * 如果有配置日志相关的系统属性，会通过这个方法来获取日志系统
+	 * @param classLoader	类加载器
+	 * @param loggingSystemClassName 日志系统的类名
+	 */
 	private static LoggingSystem get(ClassLoader classLoader, String loggingSystemClassName) {
 		try {
 			Class<?> systemClass = ClassUtils.forName(loggingSystemClassName, classLoader);

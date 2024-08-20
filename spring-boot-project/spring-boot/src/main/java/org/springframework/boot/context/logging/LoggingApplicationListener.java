@@ -59,6 +59,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
+ * 日志监听器
  * An {@link ApplicationListener} that configures the {@link LoggingSystem}. If the
  * environment contains a {@code logging.config} property it will be used to bootstrap the
  * logging system, otherwise a default configuration is used. Regardless, logging levels
@@ -294,8 +295,11 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 			this.logFile.applyToSystemProperties();
 		}
 		this.loggerGroups = new LoggerGroups(DEFAULT_GROUP_LOGGERS);
+		// 早期日志级别
 		initializeEarlyLoggingLevel(environment);
+		// 初始化日志系统
 		initializeSystem(environment, this.loggingSystem, this.logFile);
+		// 初始化日志级别
 		initializeFinalLoggingLevels(environment, this.loggingSystem);
 		registerShutdownHookIfNecessary(environment, this.loggingSystem);
 	}
@@ -326,6 +330,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		try {
 			LoggingInitializationContext initializationContext = new LoggingInitializationContext(environment);
 			if (ignoreLogConfig(logConfig)) {
+				// 调用具体日志系统的初始化方法，默认就是LogbackLoggingSystem#initialze
 				system.initialize(initializationContext, null, logFile);
 			}
 			else {

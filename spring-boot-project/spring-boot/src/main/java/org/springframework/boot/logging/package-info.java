@@ -15,6 +15,7 @@
  */
 
 /**
+ * 多个日志库的抽象
  * Support and abstractions across several logging libraries.
  *
  * @see org.springframework.boot.logging.LoggingSystem

@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
 
 /**
+ * LoggingSystem统一抽象的抽象实现类
  * Abstract base class for {@link LoggingSystem} implementations.
  *
  * @author Phillip Webb
@@ -51,6 +52,9 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	public void beforeInitialize() {
 	}
 
+	/**
+	 * 日志系统初始化
+	 */
 	@Override
 	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
 		if (StringUtils.hasLength(configLocation)) {
@@ -66,6 +70,9 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 		loadConfiguration(initializationContext, configLocation, logFile);
 	}
 
+	/**
+	 * 该方法内会加载默认配置
+	 */
 	private void initializeWithConventions(LoggingInitializationContext initializationContext, LogFile logFile) {
 		String config = getSelfInitializationConfig();
 		if (config != null && logFile == null) {
@@ -80,10 +87,13 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 			loadConfiguration(initializationContext, config, logFile);
 			return;
 		}
+		// 加载默认配置
 		loadDefaults(initializationContext, logFile);
 	}
 
 	/**
+	 * 寻找配置文件，如果添加了spring-boot-starter-logging 和 logback.xml文件
+	 * 调用的findConfig方法就会找到配置文件
 	 * Return any self initialization config that has been applied. By default this method
 	 * checks {@link #getStandardConfigLocations()} and assumes that any file that exists
 	 * will have been applied.
@@ -102,6 +112,9 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 		return findConfig(getSpringConfigLocations());
 	}
 
+	/**
+	 * 寻找配置文件的具体方法
+	 */
 	private String findConfig(String[] locations) {
 		for (String location : locations) {
 			ClassPathResource resource = new ClassPathResource(location, this.classLoader);
@@ -178,14 +191,15 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	}
 
 	/**
+	 *
 	 * Maintains a mapping between native levels and {@link LogLevel}.
 	 *
 	 * @param <T> the native level type
 	 */
 	protected static class LogLevels<T> {
-
+		// key：sb日志级别 value：其他日志框架日志级别
 		private final Map<LogLevel, T> systemToNative;
-
+		// key：其他框架日志级别 value：sb日志级别
 		private final Map<T, LogLevel> nativeToSystem;
 
 		public LogLevels() {

@@ -44,6 +44,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * java 日志系统
  * {@link LoggingSystem} for {@link Logger java.util.logging}.
  *
  * @author Phillip Webb
@@ -54,8 +55,14 @@ import org.springframework.util.StringUtils;
  */
 public class JavaLoggingSystem extends AbstractLoggingSystem {
 
+	// 用于存放springboot日志级别和jdk日志级别对应关系的属性
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
 
+	/*
+	 * 日志级别映射
+	 * key：springboot日志级别
+	 * value：jdk定义的日志级别
+	 */
 	static {
 		LEVELS.map(LogLevel.TRACE, Level.FINEST);
 		LEVELS.map(LogLevel.DEBUG, Level.FINE);
