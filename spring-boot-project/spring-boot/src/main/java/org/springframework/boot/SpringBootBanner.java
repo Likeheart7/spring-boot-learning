@@ -24,6 +24,7 @@ import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.core.env.Environment;
 
 /**
+ * banner打印最终输出内容的类
  * Default Banner implementation which writes the 'Spring' banner.
  *
  * @author Phillip Webb
@@ -39,8 +40,23 @@ class SpringBootBanner implements Banner {
 
 	private static final int STRAP_LINE_SIZE = 42;
 
+	/**
+	 * Spring boot的Banner是这个方法打印出来的
+	 * @param environment the spring environment
+	 * @param sourceClass the source class for the application
+	 * @param printStream the output print stream
+	 */
 	@Override
 	public void printBanner(Environment environment, Class<?> sourceClass, PrintStream printStream) {
+		/*
+		项目启动的时候的这个banner就是这里打印的
+		  .   ____          _            __ _ _
+		 /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+		( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+		 \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+		  '  |____| .__|_| |_|_| |_\__, | / / / /
+		 =========|_|==============|___/=/_/_/_/
+		 */
 		for (String line : BANNER) {
 			printStream.println(line);
 		}

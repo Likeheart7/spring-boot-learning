@@ -73,6 +73,9 @@ public class EventPublishingRunListener implements SpringApplicationRunListener,
 		return 0;
 	}
 
+	/**
+	 * 监听器启动方法的唯一实现
+	 */
 	@Override
 	public void starting(ConfigurableBootstrapContext bootstrapContext) {
 		this.initialMulticaster

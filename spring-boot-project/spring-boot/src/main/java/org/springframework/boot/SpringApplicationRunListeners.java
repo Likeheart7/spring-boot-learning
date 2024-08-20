@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
 
+import org.springframework.boot.context.event.EventPublishingRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.metrics.ApplicationStartup;
@@ -32,6 +33,7 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * A collection of {@link SpringApplicationRunListener}.
+ * 本类就是{@link SpringApplicationRunListener}的列表，通过属性保存了多个{@link SpringApplicationRunListener}，启动时逐个启动这些监听器
  *
  * @author Phillip Webb
  * @author Andy Wilkinson
@@ -52,6 +54,11 @@ class SpringApplicationRunListeners {
 		this.applicationStartup = applicationStartup;
 	}
 
+	/**
+	 * 启动监听器
+	 * 调用this.listeners其中的每个SpringApplicationRunListener，让其启动
+	 * 具体启动的方法是：{@link EventPublishingRunListener#starting(ConfigurableBootstrapContext)}
+	 */
 	void starting(ConfigurableBootstrapContext bootstrapContext, Class<?> mainApplicationClass) {
 		doWithListeners("spring.boot.application.starting", (listener) -> listener.starting(bootstrapContext),
 				(step) -> {
@@ -70,6 +77,9 @@ class SpringApplicationRunListeners {
 		doWithListeners("spring.boot.application.context-prepared", (listener) -> listener.contextPrepared(context));
 	}
 
+	/**
+	 * 在上下文资源加载后做一些事情
+	 */
 	void contextLoaded(ConfigurableApplicationContext context) {
 		doWithListeners("spring.boot.application.context-loaded", (listener) -> listener.contextLoaded(context));
 	}
@@ -114,9 +124,13 @@ class SpringApplicationRunListeners {
 		doWithListeners(stepName, listenerAction, null);
 	}
 
+	/**
+	 * 实际调用监听器启动的方法
+	 */
 	private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction,
 			Consumer<StartupStep> stepAction) {
 		StartupStep step = this.applicationStartup.start(stepName);
+		// 让每个监听器都执行启动的行动
 		this.listeners.forEach(listenerAction);
 		if (stepAction != null) {
 			stepAction.accept(step);
