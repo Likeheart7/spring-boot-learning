@@ -422,13 +422,13 @@ public class SpringApplication {
 	private void prepareContext(DefaultBootstrapContext bootstrapContext, ConfigurableApplicationContext context,
 			ConfigurableEnvironment environment, SpringApplicationRunListeners listeners,
 			ApplicationArguments applicationArguments, Banner printedBanner) {
-		// 在上下文中设置环境
+		// 在上下文中设置环境，包括加载属性和配置源
 		context.setEnvironment(environment);
-		// 上下文处理
+		// 上下文处理，配置上下文的某些特性
 		postProcessApplicationContext(context);
-		// 初始化
+		// 将启动类注册为配置类
 		applyInitializers(context);
-		// 监听器中放入上下文
+		// 触发 SpringApplicationRunListeners 的某些回调
 		listeners.contextPrepared(context);
 		bootstrapContext.close(context);
 		if (this.logStartupInfo) {
@@ -456,7 +456,7 @@ public class SpringApplication {
 		// Load the sources
 		Set<Object> sources = getAllSources();
 		Assert.notEmpty(sources, "Sources must not be empty");
-		// 加载上下文
+		// 加载bean定义并刷新上下文
 		load(context, sources.toArray(new Object[0]));
 		// 监听器在上下文加载后做一些处理
 		listeners.contextLoaded(context);
@@ -779,6 +779,8 @@ public class SpringApplication {
 			logger.debug("Loading source " + StringUtils.arrayToCommaDelimitedString(sources));
 		}
 		// bean定义加载器
+		// BeanDefinitionLoader 使用 AnnotatedBeanDefinitionReader 将 primarySource 类（启动类）作为配置类加载到 Spring 应用上下文。
+		// BeanDefinitionReader中有一个AnnotatedBeanDefinitionReader会处理其上的注解
 		BeanDefinitionLoader loader = createBeanDefinitionLoader(getBeanDefinitionRegistry(context), sources);
 		if (this.beanNameGenerator != null) {
 			// 设置beanName生成器
@@ -791,7 +793,8 @@ public class SpringApplication {
 		if (this.environment != null) {
 			// 设置环境
 			loader.setEnvironment(this.environment);
-		}// 加载
+		}
+		// 加载
 		loader.load();
 	}
 
