@@ -1,6 +1,7 @@
 package com.chenx.controller;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.annotation.PostConstruct;
+
 @RestController
-public class DemoController implements ApplicationContextAware {
+public class DemoController implements ApplicationContextAware, InitializingBean {
 	// DispatcherServlet实例也是作为单例放在单例池中的
 	@Autowired
 	private DispatcherServlet servlet;
@@ -39,5 +42,14 @@ public class DemoController implements ApplicationContextAware {
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+	}
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("=============>>> DemoController after properties...");
+	}
+
+	@PostConstruct
+	private void postConstruct() {
+		System.out.println("==========>>> DemoController post construct");
 	}
 }
