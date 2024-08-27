@@ -43,6 +43,10 @@ public class DemoController implements ApplicationContextAware, InitializingBean
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
+
+	/**
+	 * InitializingBean 是 Spring 专有的，通常不推荐使用。可以用@PostConstruct替换
+	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		System.out.println("=============>>> DemoController after properties...");
