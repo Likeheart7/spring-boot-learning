@@ -105,6 +105,7 @@ import org.springframework.util.StringUtils;
  * @see #setPort(int)
  * @see #setContextLifecycleListeners(Collection)
  * @see TomcatWebServer
+ * {@link  #getWebServer(ServletContextInitializer...)} 启动了tomcat
  */
 public class TomcatServletWebServerFactory extends AbstractServletWebServerFactory
 		implements ConfigurableTomcatWebServerFactory, ResourceLoaderAware {

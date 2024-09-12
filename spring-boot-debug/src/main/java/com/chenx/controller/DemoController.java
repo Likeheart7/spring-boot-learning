@@ -2,6 +2,7 @@ package com.chenx.controller;
 
 import com.chenx.service.DemoService;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -49,6 +50,9 @@ public class DemoController implements ApplicationContextAware, InitializingBean
 	 */
 	@RequestMapping("/**")
 	public String defaultHandler(){
+		// 两个都找不到，但是可以注入，这就是依赖注入和依赖查找的区别之一
+//		System.out.println(applicationContext.getBean(BeanFactory.class));
+//		System.out.println(applicationContext.getBean(ApplicationContext.class));
 		return "default Handler handle this request";
 	}
 
