@@ -1,7 +1,9 @@
 package com.chenx.config;
 
+import com.chenx.domain.User;
 import com.chenx.interceptor.DemoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,4 +26,5 @@ public class InterceptorConfig implements WebMvcConfigurer {
 		registry.addInterceptor(interceptor)
 				.addPathPatterns("/success");
 	}
+
 }

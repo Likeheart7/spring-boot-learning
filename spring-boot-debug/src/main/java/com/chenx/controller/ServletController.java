@@ -1,6 +1,8 @@
 package com.chenx.controller;
 
+import com.chenx.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,5 +34,4 @@ public class ServletController {
 		System.out.println(controller);
 		return controller.toString();
 	}
-
 }

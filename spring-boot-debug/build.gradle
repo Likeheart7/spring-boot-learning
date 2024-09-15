@@ -19,6 +19,9 @@ dependencies {
 	implementation("jakarta.validation:jakarta.validation-api")
 	implementation("org.aspectj:aspectjweaver:1.9.7")
 
+	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.6.8'
+
+
 //	用于启用@Indexed,可以避免启动扫描,加快启动时间
 //	annotationProcessor "org.springframework:spring-context-indexer:5.3.27"
 }

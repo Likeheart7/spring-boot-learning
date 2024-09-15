@@ -52,14 +52,18 @@ import org.springframework.data.repository.Repository;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@SpringBootConfiguration
-@EnableAutoConfiguration
+// 实际上本注解就是以下三个注解的合体，并配置了一些属性
+@SpringBootConfiguration //
+@EnableAutoConfiguration // 开启Spring Boot自动装配机制
+// 开启包扫描
 @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
 		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 public @interface SpringBootApplication {
 
 	/**
 	 * Exclude specific auto-configuration classes such that they will never be applied.
+	 * 排除自动装配的类
+	 * 属于桥接属性，实际上是EnableAutoConfiguration的exclude属性
 	 * @return the classes to exclude
 	 */
 	@AliasFor(annotation = EnableAutoConfiguration.class)
@@ -86,6 +90,7 @@ public @interface SpringBootApplication {
 	 * @return base packages to scan
 	 * @since 1.3.0
 	 */
+	// 桥接@ComponentScan注解的basePackages属性，用于指定扫描路径
 	@AliasFor(annotation = ComponentScan.class, attribute = "basePackages")
 	String[] scanBasePackages() default {};
 

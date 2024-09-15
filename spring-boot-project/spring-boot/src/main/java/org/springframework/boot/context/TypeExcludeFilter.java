@@ -47,6 +47,7 @@ import org.springframework.core.type.filter.TypeFilter;
  * @author Phillip Webb
  * @since 1.4.0
  */
+// @SpringBootApplication注解的@ComponentScan使用，用于查找BeanFactory中已经注册的TypeExcludeFilter Bean，作为代理执行对象
 public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 
 	private BeanFactory beanFactory;
