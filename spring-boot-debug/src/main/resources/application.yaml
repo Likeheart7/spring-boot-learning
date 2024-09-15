@@ -1,5 +1,6 @@
 server:
   port: 8001
+# spring boot 2.6开始默认禁止循环依赖，需要手动开启
 spring:
   main:
     allow-circular-references: true
