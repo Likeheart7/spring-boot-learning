@@ -1,0 +1,2 @@
+测试@Configuration代理的目的
+@Configuration中，会将调用内部@Bean修饰的方法的生成结果替换成@Bean本身创建的单例，@Component不会。
