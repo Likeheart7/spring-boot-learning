@@ -40,6 +40,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
 /**
+ * 一般情况下，我们在spring boot项目中的ApplicationContext就是该类的实例
  * {@link GenericWebApplicationContext}that accepts annotated classes as input - in
  * particular {@link Configuration @Configuration}-annotated classes, but also plain
  * {@link Component @Component} classes and JSR-330 compliant classes using
