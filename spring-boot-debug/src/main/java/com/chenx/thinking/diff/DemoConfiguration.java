@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * 测试见{@link com.chenx.thinking.autoconfiguration.thinking.ComponentAndConfigurationDiffTest}
  * </pre>
  */
+//@Configuration(proxyBeanMethods = false) // 如果proxyBeanMethods属性被设置为false，那么本类将不会代理，方法也不会被拦截，直接调用将创建一个新的实例
 @Configuration
 public class DemoConfiguration {
     @Bean
