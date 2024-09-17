@@ -94,7 +94,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @see XmlServletWebServerApplicationContext
  * @see ServletWebServerFactory
  */
-public class ServletWebServerApplicationContext extends GenericWebApplicationContext
+public class
+ServletWebServerApplicationContext extends GenericWebApplicationContext
 		implements ConfigurableWebServerApplicationContext {
 
 	private static final Log logger = LogFactory.getLog(ServletWebServerApplicationContext.class);

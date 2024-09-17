@@ -43,6 +43,7 @@ class SpringApplicationRunListeners {
 
 	private final Log log;
 
+	// 内部维护了一个SpringApplicationRunListener的集合
 	private final List<SpringApplicationRunListener> listeners;
 
 	private final ApplicationStartup applicationStartup;

@@ -264,15 +264,20 @@ public class SpringApplication {
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		// 设置primarySources，就是自己的项目启动类
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
-		// 设置应用类型。SERVLET/REACTIVE
+		// 设置应用类型。SERVLET/REACTIVE/NONE
 		this.webApplicationType = WebApplicationType.deduceFromClasspath();
+		// 获取自动配置信息
 		this.bootstrapRegistryInitializers = new ArrayList<>(
 				getSpringFactoriesInstances(BootstrapRegistryInitializer.class));
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+		// 推断应用引导类
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
+	/**
+	 * 推断应用引导类
+	 */
 	private Class<?> deduceMainApplicationClass() {
 		try {
 			StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
@@ -319,6 +324,7 @@ public class SpringApplication {
 			// 准备上下文，装配bean
 			prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);
 			// 刷新上下文
+			// 根据spring，我们知道refresh是ApplicationContext启动过程
 			refreshContext(context);
 			// 刷新上下文之后的处理
 			afterRefresh(context, applicationArguments);
@@ -509,7 +515,7 @@ public class SpringApplication {
 		/**
 		 * 排序这里是根据{@link Ordered}
 		 * 举例两个会被加载的类：SharedMetadataReaderFactoryContextInitializer、DelegatingApplicationContextInitializer都实现了Ordered接口
-		 * 其中有些类并没有实现该接口，不知道具体是如何排序的
+		 * 其中有些类并没有实现该接口，说明不是必须的
 		 */
 		AnnotationAwareOrderComparator.sort(instances);
 		return instances;

@@ -24,6 +24,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 /**
+ * 可以理解成Spring Boot应用的运行时监视器
  * Listener for the {@link SpringApplication} {@code run} method.
  * {@link SpringApplicationRunListener}s are loaded via the {@link SpringFactoriesLoader}
  * and should declare a public constructor that accepts a {@link SpringApplication}
@@ -39,6 +40,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 public interface SpringApplicationRunListener {
 
 	/**
+	 * Spring应用刚启动
 	 * Called immediately when the run method has first started. Can be used for very
 	 * early initialization.
 	 * @param bootstrapContext the bootstrap context
@@ -47,6 +49,7 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * ConfigurableEnvironment准备好，允许对其进行调整
 	 * Called once the environment has been prepared, but before the
 	 * {@link ApplicationContext} has been created.
 	 * @param bootstrapContext the bootstrap context
@@ -57,6 +60,7 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * ConfigurableApplicationContext准备好，允许将其调整
 	 * Called once the {@link ApplicationContext} has been created and prepared, but
 	 * before sources have been loaded.
 	 * @param context the application context
@@ -65,6 +69,7 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * ConfigurableApplicationContext装载后，启动前。
 	 * Called once the application context has been loaded but before it has been
 	 * refreshed.
 	 * @param context the application context
@@ -85,6 +90,8 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * ConfigurableApplicationContext启动后，此时Spring Bean已经初始化完成
+	 * 但runner还没运行
 	 * The context has been refreshed and the application has started but
 	 * {@link CommandLineRunner CommandLineRunners} and {@link ApplicationRunner
 	 * ApplicationRunners} have not been called.
@@ -98,6 +105,7 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * 各runner运行后
 	 * Called immediately before the run method finishes, when the application context has
 	 * been refreshed and all {@link CommandLineRunner CommandLineRunners} and
 	 * {@link ApplicationRunner ApplicationRunners} have been called.
@@ -111,6 +119,7 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * 在run方法结束前调用
 	 * Called immediately before the run method finishes, when the application context has
 	 * been refreshed and all {@link CommandLineRunner CommandLineRunners} and
 	 * {@link ApplicationRunner ApplicationRunners} have been called.
@@ -124,6 +133,7 @@ public interface SpringApplicationRunListener {
 	}
 
 	/**
+	 * 运行这个Application失败时调用
 	 * Called when a failure occurs when running the application.
 	 * @param context the application context or {@code null} if a failure occurred before
 	 * the context was created
