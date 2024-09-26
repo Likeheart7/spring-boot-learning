@@ -21,7 +21,7 @@ import java.util.Set;
 
 /**
  * A configurable {@link WebServerFactory}.
- *
+ * 表示是一个可配置的WebServerFactory
  * @author Phillip Webb
  * @author Brian Clozel
  * @since 2.0.0
@@ -30,6 +30,8 @@ import java.util.Set;
 public interface ConfigurableWebServerFactory extends WebServerFactory, ErrorPageRegistry {
 
 	/**
+	 * 设置要监听的端口。默认8080
+	 * 如果设置为-1，表示禁止自动启动（即启动应用上下文，但是不监听任何端口）
 	 * Sets the port that the web server should listen on. If not specified port '8080'
 	 * will be used. Use port -1 to disable auto-start (i.e. start the web application
 	 * context but not have it listen to any port).
@@ -38,36 +40,42 @@ public interface ConfigurableWebServerFactory extends WebServerFactory, ErrorPag
 	void setPort(int port);
 
 	/**
+	 * 设置要绑定的地址
 	 * Sets the specific network address that the server should bind to.
 	 * @param address the address to set (defaults to {@code null})
 	 */
 	void setAddress(InetAddress address);
 
 	/**
+	 * 设置出现异常时，要显示的错误页
 	 * Sets the error pages that will be used when handling exceptions.
 	 * @param errorPages the error pages
 	 */
 	void setErrorPages(Set<? extends ErrorPage> errorPages);
 
 	/**
+	 * SSL相关配置
 	 * Sets the SSL configuration that will be applied to the server's default connector.
 	 * @param ssl the SSL configuration
 	 */
 	void setSsl(Ssl ssl);
 
 	/**
+	 * 设置获取SSL的SslStoreProvider
 	 * Sets a provider that will be used to obtain SSL stores.
 	 * @param sslStoreProvider the SSL store provider
 	 */
 	void setSslStoreProvider(SslStoreProvider sslStoreProvider);
 
 	/**
+	 * 设置HTTP2相关配置
 	 * Sets the HTTP/2 configuration that will be applied to the server.
 	 * @param http2 the HTTP/2 configuration
 	 */
 	void setHttp2(Http2 http2);
 
 	/**
+	 * 设置http compression相关配置
 	 * Sets the compression configuration that will be applied to the server's default
 	 * connector.
 	 * @param compression the compression configuration
@@ -75,6 +83,7 @@ public interface ConfigurableWebServerFactory extends WebServerFactory, ErrorPag
 	void setCompression(Compression compression);
 
 	/**
+	 * 设置Server header的值
 	 * Sets the server header value.
 	 * @param serverHeader the server header value
 	 */

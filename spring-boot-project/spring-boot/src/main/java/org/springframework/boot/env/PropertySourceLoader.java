@@ -24,6 +24,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 /**
+ * Spring Boot封装了配置文件加载逻辑
  * Strategy interface located via {@link SpringFactoriesLoader} and used to load a
  * {@link PropertySource}.
  *
@@ -34,12 +35,14 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 public interface PropertySourceLoader {
 
 	/**
+	 * 获取支持的文件后缀。排除 .
 	 * Returns the file extensions that the loader supports (excluding the '.').
 	 * @return the file extensions
 	 */
 	String[] getFileExtensions();
 
 	/**
+	 * 把资源Resource加载成PropertySource
 	 * Load the resource into one or more property sources. Implementations may either
 	 * return a list containing a single source, or in the case of a multi-document format
 	 * such as yaml a source for each document in the resource.

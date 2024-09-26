@@ -210,6 +210,7 @@ public class SpringApplication {
 
 	private List<ApplicationContextInitializer<?>> initializers;
 
+	// 应用中的监听器，包括spring.factories文件内定义的。
 	private List<ApplicationListener<?>> listeners;
 
 	private Map<String, Object> defaultProperties;

@@ -28,9 +28,10 @@ package org.springframework.boot.web.server;
 public interface WebServer {
 
 	/**
+	 * 启动WebServer，如果已经启动，调用该方法不会有影响
 	 * Starts the web server. Calling this method on an already started server has no
 	 * effect.
-	 * @throws WebServerException if the server cannot be started
+	 * @throws WebServerException 无法启动，抛出该异常
 	 */
 	void start() throws WebServerException;
 
